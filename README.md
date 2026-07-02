@@ -1,4 +1,5 @@
 # The Richelot isogeny graph as a Brandt matrix — computational artifact
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20798967.svg)](https://doi.org/10.5281/zenodo.20798967)
 
 This repository contains the scripts, the assembled matrices, and the
 machine-checkable certificates accompanying the paper
