@@ -1,0 +1,10 @@
+# Brandt matrix B_2(2), p = 11  (h_2 = 5: 3 product vertices, 2 Jacobian vertices)
+# Vertices (label, weight e_i = #Aut), in matrix order:
+#   v1 = P{0,0} (72), v2 = P{0,1} (24), v3 = P{1,1} (32), v4 = J_0 (24), v5 = J_1 (12)
+3 0 9 3 0
+0 6 3 0 6
+4 4 3 4 0
+1 0 3 3 8
+0 3 0 4 8
+# row sums = 15 (15-regular); weighted symmetry e_j M_ij = e_i M_ji holds.
+# charpoly = (x-15)(x^2-14x+46)(x^2+6x+6); eigenvalues 15, 7±√3, -3±√3.

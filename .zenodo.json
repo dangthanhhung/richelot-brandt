@@ -1,0 +1,21 @@
+{
+  "title": "Computational artifact for: The Richelot isogeny graph as a Brandt matrix",
+  "description": "Scripts, assembled Brandt matrices, and machine-checkable certificates reproducing all computations in the paper 'The Richelot isogeny graph as a Brandt matrix: a global eigenvalue correspondence and a structural trace formula' (eight matrices B_2(2) for 11<=p<=37, the full 128x128 computation at p=61, the spectral catalogue, the sign law, the trace identity, the type numbers, and the closed-form predictions).",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Dang, Hung T.",
+      "affiliation": "Department of Mathematics, University of Phuong Dong, Hanoi, Vietnam",
+      "orcid": "0009-0006-3272-0573"
+    }
+  ],
+  "keywords": [
+    "Richelot isogeny graph",
+    "Brandt matrix",
+    "superspecial abelian surfaces",
+    "paramodular forms",
+    "type numbers"
+  ],
+  "license": "MIT",
+  "access_right": "open"
+}
