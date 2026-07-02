@@ -5,8 +5,8 @@ This repository contains the scripts, the assembled matrices, and the
 machine-checkable certificates accompanying the paper
 
 > Hung T. Dang,
-> *The Richelot isogeny graph as a Brandt matrix: computation, spectral
-> catalogue, and type numbers.*
+> *The Richelot isogeny graph as a Brandt matrix: a global eigenvalue
+> correspondence and a structural trace formula*
 
 Everything reported in the paper is regenerated from these files: the
 eight Brandt matrices `B_2(2)` for `11 <= p <= 37`, the larger run at
