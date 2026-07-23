@@ -32,6 +32,9 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.20798968
     description: "Version DOI (first release)"
+  - type: doi
+    value: 10.5281/zenodo.21503334
+    description: "Version DOI (v2.0.2)"
 preferred-citation:
   type: article
   title: "The Richelot isogeny graph as a Brandt matrix: a global eigenvalue correspondence and a structural trace formula"
