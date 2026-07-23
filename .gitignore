@@ -1,0 +1,9 @@
+scripts/h2_result_*.json
+scripts/w2data.json
+scripts/w4data_part1.json
+scripts/assembly_results.json
+scripts/appendix_A_matrices.tex
+scripts/backup_run1/
+scripts/__pycache__/
+*.pyc
+*.orig

@@ -1,12 +1,11 @@
 # The Richelot isogeny graph as a Brandt matrix — computational artifact
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20798967.svg)](https://doi.org/10.5281/zenodo.20798967)
 
 This repository contains the scripts, the assembled matrices, and the
 machine-checkable certificates accompanying the paper
 
 > Hung T. Dang,
 > *The Richelot isogeny graph as a Brandt matrix: a global eigenvalue
-> correspondence and a structural trace formula*
+> correspondence and a structural trace formula.*
 
 Everything reported in the paper is regenerated from these files: the
 eight Brandt matrices `B_2(2)` for `11 <= p <= 37`, the larger run at
@@ -29,7 +28,7 @@ implementation.
 Install the Python dependencies with
 
 ```
-pip install sympy numpy galois
+pip install sympy numpy galois python-flint
 ```
 
 The Python certification layer (`verify_three_pillars.py`,
@@ -58,6 +57,13 @@ python scripts/verify_IK94_typenumber.py
 
 # 5. regenerate Appendix A verbatim
 python scripts/gen_appendix_A.py
+
+# reference verifier for the reduction proposition (Lemma 5.3 / Prop. 5.4)
+python scripts/verify_reduction.py
+
+# certificate (P4): external comparison against the ALRTV quinary database
+# (fetch the data first: git clone --depth 1 https://github.com/assaferan/omf5_data)
+python scripts/certify_P4_omf5.py omf5_data/hecke_evs_3_0/data_nl_200
 
 # 6. independently verify the p = 61 result (no Sage needed):
 #    the (x+7) general-type factor, the block structure, and agreement

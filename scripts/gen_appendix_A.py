@@ -21,7 +21,8 @@
 #       e = |Aut E_a||Aut E_b| (a != b), 2|Aut E|^2 (a = b) must equal the
 #       weights in 'evec'; #products = s(s+1)/2;
 #   (d) Galois action on labels: Frobenius x -> x^p permutes the j-set; at
-#       p = 37 it must swap 20+10w <-> 23+27w (the two non-rational j's).
+#       p = 37 it must swap 20+10w <-> 23+27w, printed as 20+10\omega and
+#       23+27\omega in the appendix (the two non-rational j's).
 # Only if every assert passes is any LaTeX written.
 #
 # Output: appendix_A_matrices.tex  (to be \input by the main file).
@@ -141,8 +142,8 @@ def fmt_j(jkey):
     if b == 0:
         return str(a)
     if a == 0:
-        return f"{b}w"
-    return f"{a}{{+}}{b}w"
+        return f"{b}\\omega"
+    return f"{a}{{+}}{b}\\omega"
 
 
 # ---------------------------------------------------------------------------
@@ -247,8 +248,9 @@ for p in PRIMES:
     # English pluralization (cosmetic only -- numbers untouched)
     pw = "vertex" if nP == 1 else "vertices"
     jw = "vertex" if vJ == 1 else "vertices"
-    body.append(f"\\subsection*{{$p={p}$\\quad ($h_2={V}$:\\ {nP} product"
-                f" {pw}, {vJ} Jacobian {jw})}}\n")
+    body.append(f"\\subsection*{{\\texorpdfstring{{$p={p}$\\quad ($h_2={V}$:\\ {nP} product"
+                f" {pw}, {vJ} Jacobian {jw})}}{{p={p} (h2={V}: {nP} product"
+                f" {pw}, {vJ} Jacobian {jw})}}}}\n")
     # vertex key (labels + weights), in matrix order
     key_items = []
     for i, (L, ei) in enumerate(zip(labels, e), start=1):
@@ -261,10 +263,13 @@ for p in PRIMES:
     # key-paragraph font size scales with V to avoid overfull lines:
     keysize = "\\small" if V <= 10 else ("\\footnotesize" if V <= 16
                                          else "\\scriptsize")
+    omega_note = ("; $\\omega$ denotes a fixed generator of"
+                  f" $\\F_{{{p}^2}}$ over $\\F_{{{p}}}$"
+                  if any("\\omega" in k for k in key_items) else "")
     body.append("\\begin{sloppypar}\\noindent" + keysize +
                 "\\textit{Vertices (label, weight $e_i=\\#"
                 "\\operatorname{Aut}$), in matrix order:} "
-                + ", ".join(key_items) + ".\\end{sloppypar}\n\n")
+                + ", ".join(key_items) + omega_note + ".\\end{sloppypar}\n\n")
     rowtex = " \\\\\n".join(" & ".join(str(x) for x in row) for row in M)
     body.append(
         "\\begingroup" + size +
@@ -273,6 +278,8 @@ for p in PRIMES:
         + rowtex + "\n\\end{array}\\right) \\]\n\\endgroup\n")
     chunks.append("".join(body))
     summary.append((p, V, nP, vJ))
+
+chunks.append("\\bigskip\n")
 
 with open(OUT, "w") as f:
     f.write("\n".join(chunks))

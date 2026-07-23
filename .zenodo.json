@@ -1,6 +1,6 @@
 {
   "title": "Computational artifact for: The Richelot isogeny graph as a Brandt matrix",
-  "description": "Scripts, assembled Brandt matrices, and machine-checkable certificates reproducing all computations in the paper 'The Richelot isogeny graph as a Brandt matrix: a global eigenvalue correspondence and a structural trace formula' (eight matrices B_2(2) for 11<=p<=37, the full 128x128 computation at p=61, the spectral catalogue, the sign law, the trace identity, the type numbers, and the closed-form predictions).",
+  "description": "Scripts, assembled Brandt matrices, and machine-checkable certificates reproducing all computations in the paper 'The Richelot isogeny graph as a Brandt matrix: a global eigenvalue correspondence and a structural trace formula' (the eight matrices B_2(2) for 11<=p<=37, the full 128x128 computation at p=61, the certified catalogue at every prime 11<=p<=149, the spectral catalogue, the sign law, the trace identity, the type numbers, and the closed-form predictions). Version 2.0.2 adds certificate (P4), an external comparison of every general-type factor against the quinary paramodular database of Assaf-Ladd-Rama-Tornaria-Voight (arXiv:2308.09824), and a standalone reference verifier for the reduction proposition of the paper.",
   "upload_type": "software",
   "creators": [
     {
@@ -14,8 +14,18 @@
     "Brandt matrix",
     "superspecial abelian surfaces",
     "paramodular forms",
-    "type numbers"
+    "type numbers",
+    "certified computation",
+    "reproducibility"
   ],
   "license": "MIT",
-  "access_right": "open"
+  "access_right": "open",
+  "version": "2.0.2",
+  "related_identifiers": [
+    {
+      "identifier": "arXiv:2308.09824",
+      "relation": "references",
+      "scheme": "arxiv"
+    }
+  ]
 }

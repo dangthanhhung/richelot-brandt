@@ -7,6 +7,7 @@ richelot-brandt/
 ├── LICENSE                      MIT
 ├── .zenodo.json                 Zenodo deposition metadata
 ├── MANIFEST.md                  this file
+├── CHANGELOG.md                 version history
 ├── scripts/                     the certification and assembly scripts
 │   ├── verify_three_pillars.py        pure-Python re-derivation of the three pillars
 │   ├── verify_p61.py                   pure-Python check of the p=61 result (x+7 factor, blocks)
@@ -18,7 +19,14 @@ richelot-brandt/
 │   ├── verify_general_prop.py         all-p ingredients on the eight matrices
 │   ├── verify_signlaw.py              sign-law certification
 │   ├── check_lmfdb_readings.py        LMFDB cross-check of the newform data
-│   ├── gen_appendix_A.py              regenerates Appendix A
+│   ├── gen_appendix_A.py              regenerates Appendix A (byte-identical to the manuscript)
+│   ├── richelot.py                     graph engine, adaptive extension fields (one prime per run)
+│   ├── w2side.py                       weight-2 systems + Fricke signs (elliptic Brandt)
+│   ├── msym.py                         weight-4 systems + Fricke signs (Manin symbols, Merel-Heilbronn)
+│   ├── assembly.py                     two-sided catalogue matching, all 31 primes
+│   ├── verify_reduction.py             reference verifier, hypotheses (a)-(d) of the reduction proposition
+│   ├── certify_P4_omf5.py              certificate (P4), external comparison against the ALRTV database
+│   ├── MANIFEST.sha256                 SHA-256 of every script and data file in scripts/
 │   ├── assemble_brandt.sage           matrix assembly from the geometry (Sage)
 │   ├── step_b3_signs_conjugation.sage sigma-action, odd-part polynomials (Sage)
 │   ├── al_provenance.sage             Atkin-Lehner provenance (Sage)
