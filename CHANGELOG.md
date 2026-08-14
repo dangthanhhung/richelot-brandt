@@ -1,31 +1,41 @@
 # Changelog
 
+## v3.0.0 (2026-08-13)
+Synchronized with paper v4 ("A structural trace identity and certified
+spectra for the Richelot--Brandt graph") and hardened for verification.
+
+Added:
+- `verify_all.py`: independent structural + spectral verifier for all 31
+  primes, including the EXACT characteristic-polynomial identity
+  charpoly(M) = product of the stored factors (python-flint), the Mestre
+  and mass checks, the sigma/R(pi) checks with Fix = Tr R(pi), and the
+  headline numbers of the paper (Fix counts of Lemma 8.1, max 2 h_2 = 2866,
+  N_61 = x+7, N_73 = x+6, N_79 = x+5).
+- `verify_positivity_2500.py`: the finite input of Theorem 8.5 -- exact
+  evaluation of the Proposition 8.2 class-number formula for d(p) at every
+  prime 7 <= p <= 2500, with the crude-bound cutoff pinned at 673.
+- `expected_output_verify_all.txt`, `expected_output_positivity.txt`:
+  reference transcripts of the two verifiers.
+- `magma/`: independent Magma certification of h_2(p), mass and |Aut|
+  (self-contained scripts for p in {7, 17, 31, 37, 61}; lattice-class
+  records; generator script; own README).
+- `LICENSE`, `CITATION.cff`, `CHANGELOG.md`, `requirements.txt`.
+
+Changed:
+- `README.md` rewritten: paper title and all statement numbers now follow
+  the v4 manuscript (Theorem 2.1, Conjecture 2.2, Theorem 2.3, Lemma 4.1,
+  Proposition 6.2, Lemma 8.1, Proposition 8.2, Theorem 8.5).
+- `MANIFEST.sha256` regenerated over the full v3.0.0 file set.
+
+Removed / clarified:
+- The side file `p61_charpoly.txt` of some working copies is not part of
+  this record; the factored characteristic polynomial at p = 61 lives in
+  `h2_result_61.json` (single source of truth). Note: `res.TrB = 126` is
+  the trace of B_2(2); `res.TrR = 38 = 2*T_1(61) - h_2(61)` is the trace
+  of the involution R(pi); the two are different operators.
+- `w4data_part1.json` keeps its historical name; it covers all 31 primes
+  (there is no part 2).
+
 ## v2.0.2 (2026-07-23)
-
-- Add `scripts/certify_P4_omf5.py` -- certificate (P4): at every prime
-  11 <= p <= 149 the general-type factor N_p is compared against the
-  type-(G) paramodular eigensystems of the quinary database of
-  Assaf-Ladd-Rama-Tornaria-Voight (arXiv:2308.09824; data commit
-  1907b8812c3ceb45fd09d47e24f96593116e816a). All 31 levels agree,
-  including N_p = 1 at the seventeen primes with delta(p) = 0.
-- Add `scripts/verify_reduction.py` -- standalone reference verifier for
-  hypotheses (a)-(d) of the reduction proposition (Lemma 5.3 /
-  Proposition 5.4), with an embedded self-test at p = 11.
-- `scripts/gen_appendix_A.py`: emit the F_{p^2} generator as \omega,
-  wrap the per-prime headings in \texorpdfstring, and close the file with
-  \bigskip. The regenerated appendix is byte-identical to Appendix A of
-  the submitted manuscript.
-- `scripts/assembly.py`: corrected stale docstring (the script runs all
-  thirty-one primes 11 <= p <= 149; the previous "T3-to-101" header
-  predated the extension).
-- `scripts/MANIFEST.sha256`: now covers every script and data file in
-  `scripts/` (previously only the 34 data files), so the verifying code
-  itself is checksummed.
-- Housekeeping: removed `__pycache__/`, the `.orig` backup, the duplicate
-  `gen_appendix_A_patched.py`, the redundant `backup_run1/` tree, and the
-  nested `result-11-149.zip`.
-- No numerical output of any certificate changed in this version.
-
-## v2.0.1 (2026-07-02)
-
-- First archived release accompanying the submitted manuscript.
+As published: production engines, 31 per-prime records, appendix
+generator, reduction verifier, ALRTV comparison.

@@ -1,0 +1,4 @@
+# reference verifiers
+python-flint>=0.9.0
+# production engines and verify_reduction.py additionally use:
+sympy>=1.12

@@ -1,171 +1,151 @@
-# The Richelot isogeny graph as a Brandt matrix — computational artifact
+# Richelot--Brandt artifact, version 3.0.0
 
-This repository contains the scripts, the assembled matrices, and the
-machine-checkable certificates accompanying the paper
+Data and code accompanying the paper *"A structural trace identity and
+certified spectra for the Richelot--Brandt graph"*. This record contains
+the complete certified computation of the degree-2 Brandt matrices
+B_2(2) on superspecial principally polarized abelian surfaces at every
+prime 11 <= p <= 149, their full spectral catalogues with Fricke signs,
+the two-sided verification of the eigenvalue--sign refinement
+(Conjecture 2.2 of the paper) on that range, the exact positivity
+certificate for the signed defect d(p) at every prime 7 <= p <= 2500
+(the finite input of Theorem 8.5), and an independent Magma
+certification of the class numbers h_2(p) on a subrange.
 
-> Hung T. Dang,
-> *The Richelot isogeny graph as a Brandt matrix: a global eigenvalue
-> correspondence and a structural trace formula.*
-
-Everything reported in the paper is regenerated from these files: the
-eight Brandt matrices `B_2(2)` for `11 <= p <= 37`, the larger run at
-`p = 61`, the spectral catalogue, the sign law, the trace identity, the
-type numbers, and the closed-form predictions. No numerical value in the
-paper was entered by hand.
-
-## Requirements
-
-Two independent toolchains are used, by design, so that the geometric
-assembly and the arithmetic certification do not share an
-implementation.
-
-| Layer | Tool | Used for |
-|-------|------|----------|
-| Geometric assembly | **SageMath ≥ 9.5** | vertex enumeration, Richelot edges, matrix assembly, Atkin–Lehner provenance |
-| Arithmetic certification | **Python ≥ 3.9** with `sympy`, `numpy`, `galois` | the self-contained re-derivation, the dimension/trace identities, the positivity bound |
-| Cross-check (optional) | **Magma** | the per-level `magma/verify_h2_*.m` scripts (self-contained; quaternion-order certification of `h2(p)`) |
-
-Install the Python dependencies with
-
-```
-pip install sympy numpy galois python-flint
-```
-
-The Python certification layer (`verify_three_pillars.py`,
-`closed_identities_audit.py`, `prove_trace_identity.py`,
-`certificate_positivity.py`, `verify_IK94_typenumber.py`,
-`check_outofsample.py`, `gen_appendix_A.py`) runs **without Sage**: it
-re-derives the published matrices from the stored data block and checks
-every identity in exact arithmetic. Sage is required only to *re-assemble*
-the matrices from the geometry.
-
-## Quick start
-
-```
-# 1. exact-arithmetic re-derivation of all three pillars (no Sage needed)
-python scripts/verify_three_pillars.py
-
-# 2. trace identity, all primes 7 <= p <= 2500
-python scripts/closed_identities_audit.py
-python scripts/prove_trace_identity.py
-
-# 3. positivity of the block degrees (Lemma)
-python scripts/certificate_positivity.py
-
-# 4. type numbers, independent IK94 route
-python scripts/verify_IK94_typenumber.py
-
-# 5. regenerate Appendix A verbatim
-python scripts/gen_appendix_A.py
-
-# reference verifier for the reduction proposition (Lemma 5.3 / Prop. 5.4)
-python scripts/verify_reduction.py
-
-# certificate (P4): external comparison against the ALRTV quinary database
-# (fetch the data first: git clone --depth 1 https://github.com/assaferan/omf5_data)
-python scripts/certify_P4_omf5.py omf5_data/hecke_evs_3_0/data_nl_200
-
-# 6. independently verify the p = 61 result (no Sage needed):
-#    the (x+7) general-type factor, the block structure, and agreement
-#    with the elliptic newform data
-python scripts/verify_p61.py
-```
-
-To re-assemble the matrices from the geometry (requires Sage):
-
-```
-sage scripts/assemble_brandt.sage          # matrices for 11..37 and p=61 + battery (i)-(vi)
-sage scripts/step_b3_signs_conjugation.sage # sigma-action, odd-part polynomials
-sage scripts/al_provenance.sage             # Atkin-Lehner signs from a_p
-```
+Concept DOI (always resolves to the latest version):
+10.5281/zenodo.20798967. This version: 10.5281/zenodo.21927983.
 
 ## Contents
 
-### `scripts/` — the scripts of Appendix B, plus helpers
+Production engines (as in v2.0.2, unchanged):
+- `richelot.py`   -- graph engine (adaptive extension fields); one prime per run argument
+- `w2side.py`     -- weight-2 eigenvalue systems + Fricke signs (elliptic Brandt)
+- `msym.py`       -- weight-4 eigenvalue systems + Fricke signs (Manin symbols, Merel--Heilbronn)
+- `assembly.py`   -- two-sided catalogue matching: exact division + trace-decoded sign certificates modulo 2^61 - 1
 
-| Script | Proves / produces |
-|--------|-------------------|
-| `assemble_brandt.sage` | enumerates vertices, assembles the eight matrices by the four-piece construction, runs the acceptance battery (i)–(vi), prints the elliptic newform `a_2`-data |
-| `step_b3_signs_conjugation.sage` | the action of `σ` on vertices and the odd-part characteristic polynomials |
-| `al_provenance.sage` | derives every Atkin–Lehner sign from `a_p` and cross-checks against Sage's routine |
-| `verify_three_pillars.py` | self-contained pure-Python re-derivation: structure, characteristic polynomials, catalogue (with `Mys_p` as a residue), "cleanly absent" via gcd, trace identity |
-| `verify_general_prop.py` | all-`p` ingredients on the eight matrices: regularity, strong connectivity, loop bound, primitivity, simplicity of 15 with Sturm count, the kernel and polarization identities, and the dimension-identity reduction |
-| `verify_signlaw.py` | certifies the sign law: independent exhaustive re-derivation of `σ`, fixed/2-cycle counts, the signed characteristic polynomial on the odd part, and the gcd sign-separations |
-| `verify_IK94_typenumber.py` | reimplements the analytic `2T−H` of IK94, validates against the published table for `7 ≤ p ≤ 53`, feeds the type-number corollary |
-| `check_outofsample.py` | the out-of-sample tests at `p = 41,43,47,53` |
-| `closed_identities_audit.py` | exact-arithmetic closed weight-3 dimension formulas; verifies the trace identity for every prime `7 ≤ p ≤ 2500`; generates the predictions table |
-| `prove_trace_identity.py` | symbolic proof of the trace identity per residue class (8 mod 24, 32 mod 120), with `B_{2,χ}`, `h(−p)`, `h(−2p)`, `h(−3p)` as independent symbols |
-| `certificate_positivity.py` | proves the positivity lemma: polynomial lower bound per class mod 120, finite check, the residual `d(p) ≥ 0` for `p ≥ 61` to `p = 2500` |
-| `check_lmfdb_readings.py` | cross-checks dimension, Fricke sign and `a_2`-trace of all 38 trivial-character newform orbits against LMFDB |
-| `gen_appendix_A.py` | regenerates Appendix A, re-asserting row sums, Mestre symmetry, both mass identities, recomputing supersingular `j`-invariants independently |
-| `worked_edge_p11.sage` | helper: produces one certified Richelot edge of G_11 (Hasse-Witt superspecial test + (2,2)-splitting + codomain), the edge displayed in the worked example of Sec. 3.3 |
+Frozen data:
+- `h2_result_p.json` (31 files, 11 <= p <= 149) -- per-prime record:
+  matrix `M`, weights `wts`, involution `sigma`, and the summary `res`
+  (h2, vP, vJ, TrB = trace of B_2(2), TrR = trace of R(pi) = 2 T_1 - h_2,
+  factored characteristic polynomial, block degrees). Note TrB and TrR
+  are traces of two different operators (at p = 61: 126 and 38).
+- `w2data.json`, `w4data_part1.json` -- weight-2/4 orbit polynomials with
+  signs, all 31 primes (`part1` is a historical name; there is no part 2).
+- `assembly_results.json` -- final ledger: block degrees sk/yos/mys and
+  the general-type polynomial N_p at all 31 primes.
+- `appendix_A_matrices.tex` -- the eight matrices of Appendix A.
 
-### `matrices/` — the assembled Brandt matrices
+Verifiers:
+- `verify_all.py` -- independent structural + spectral verifier, all 31
+  primes (python-flint). Per prime: row sums 15; Mestre symmetry
+  e_j M_ij = e_i M_ji; the Hashimoto--Ibukiyama mass as an exact
+  rational; sigma an involution commuting with M and preserving e, with
+  Fix(sigma) = TrR; trace(M) = TrB = sum of the roots of the stored
+  factorization; the EXACT identity charpoly(M) = product of the stored
+  factors; the Eisenstein factor (x - 15) simple; the recomputed
+  square-excess degree; the ledger identity
+  1 + sk + yos + 2*mys + deg(N_p) = h_2(p). Globally: the Fix counts of
+  Lemma 8.1 (5, 4, 8, 8, 14, 18, 18, 11 at p = 11..37 and 38 at p = 61),
+  max_p 2 h_2(p) = 2866 at p = 149 (the modulus bound of Section 6), and
+  N_61 = x + 7, N_73 = x + 6, N_79 = x + 5. Run with `--verify-manifest`
+  to recompute every SHA-256 in the manifest first.
+- `verify_positivity_2500.py` -- the finite input of Theorem 8.5: exact
+  evaluation of the Proposition 8.2 class-number formula for d(p) at
+  every prime 7 <= p <= 2500 (standard library only); checks that d(p)
+  is a non-negative integer throughout, that the crude bound of the
+  proof is positive for every prime p > 673, and that 673 is the largest
+  prime where the crude bound fails.
+- `verify_reduction.py` -- minimal standalone verifier of hypotheses
+  (a)--(d) of Proposition 6.2 at p = 11; mirrors Lemma 6.1 and
+  Proposition 6.2 line by line and shares no code with the engines.
+- `verify_p61.py` -- the worked example of Section 6.9 replayed.
+- `verify_three_pillars.py`, `verify_IK94_typenumber.py`,
+  `verify_signlaw.py`, `verify_general_prop.py`, `closed_identities_audit.py`,
+  `certificate_positivity.py` -- the supporting audits of the closed
+  dimension identities and of Lemma 4.1 (delta(p) >= 0, d(p) >= 0), as
+  in v2.0.2.
+- `certify_P4_omf5.py` -- external comparison of every N_p against the
+  ALRTV quinary database.
+- `gen_appendix_A.py` -- regenerates `appendix_A_matrices.tex`,
+  byte-identical to Appendix A of the paper.
 
-Plain-text and JSON forms of `B_2(2)` for `p ∈ {11,13,17,19,23,29,31,37}`
-and the `p = 61` run, each with its vertex labels and automorphism
-weights.
+Independent certification:
+- `magma/` -- Magma certification of h_2(p), the mass, and every |Aut|
+  via quaternion Hermitian lattices, self-contained for
+  p in {7, 17, 31, 37, 61}, with the underlying lattice-class records
+  and a generator script; see `magma/README_magma.md`. This line shares
+  no code and no data path with the Python engines.
 
-### `data/` — supporting data
+Reference transcripts and metadata:
+- `expected_output_verify_all.txt`, `expected_output_positivity.txt`
+  (timings are machine-dependent; every other line should match).
+- `MANIFEST.sha256` -- SHA-256 of every file in this record (except itself).
+- `LICENSE` (MIT for code; data additionally CC-BY-4.0), `CITATION.cff`,
+  `CHANGELOG.md`, `requirements.txt`.
 
-The pinned newform `a_2`-data, the LMFDB download records used by
-`check_lmfdb_readings.py`, and the residue-class symbolic forms.
+## Requirements
 
-### `magma/` — independent quaternion-order certification (Magma)
+Python >= 3.9. `pip install -r requirements.txt`: python-flint (engines
+and `verify_all.py`), sympy (engines and `verify_reduction.py`).
+`verify_positivity_2500.py` needs only the standard library. The
+`magma/` scripts need Magma; the free online calculator suffices, one
+stage at a time.
 
-Self-contained Magma scripts `verify_h2_p.m` for `p \in {7,17,31,37,61}`
-that certify the class number `h_2(p)` directly from a maximal order of
-the quaternion algebra `B_{p,\infty}`, by a route entirely independent of
-the geometric assembly. Each is self-contained (the structure constants
-are embedded) and runs in Magma with no external input; every check is an
-`assert`. They provide a third, lattice-theoretic cross-check of the
-vertex counts.
+## Five-minute referee path
 
-## What is verified, and to what extent
+    python3 verify_all.py --verify-manifest --primes 11 61
+    python3 verify_reduction.py
+    python3 verify_positivity_2500.py
 
-- **The eight matrices** are reproduced verbatim and certified by the
-  full battery; at `p = 11` the matrix agrees with Jordan–Zaytman.
-- **The catalogue, sign law and trace identity** are checked as exact
-  identities, the trace identity symbolically (all primes) and
-  numerically through `p = 2500`.
-- **The type numbers** are confirmed by three independent routes.
-- The newform inputs are cross-checked against the **LMFDB**.
+Expected: the manifest line, two per-prime `charpoly OK  blocks OK`
+lines, the asserts of `verify_reduction.py`, and
+`POSITIVITY (Theorem 8.5, finite input): PASSED, 7 <= p <= 2500`.
+The p = 11 record can additionally be checked by eye against Appendix A
+of the paper and against Jordan--Zaytman, J. Math. Soc. Japan,
+Theorem 39 and Section 10.1.
 
-## Extending to other primes
+## Full verification and reproduction
 
-The scripts differ in how far they run new primes without code changes.
+    python3 verify_all.py --verify-manifest       # all 31 primes; about 8 minutes (dominated by the exact 1433 x 1433 characteristic polynomial at p = 149)
+    python3 verify_positivity_2500.py             # about 5 seconds
 
-- **`assemble_brandt.sage` (geometric engine).** Edit the `PRIMES` list and
-  re-run; the matrix, weights, and factored characteristic polynomial are built
-  from scratch per prime. The implementation assumes the six Weierstrass points
-  of every genus-2 vertex are rational over `GF(p^2)`; this holds for all primes
-  tested through `p = 61` and first fails at `p = 73` (the `assert len(bp) == 6`
-  in `neighbors()` aborts), where some vertices need `GF(p^4)`. Going further
-  requires generalizing `branch()` and the pairing/splitting routines to carry
-  Weierstrass points over `GF(p^4)`; the rest is prime-independent.
-- **`verify_three_pillars.py` (Python, `p <= 37`).** Does not recompute geometry;
-  it re-derives the three pillars from the integer matrices stored in its `DATA`
-  dictionary. To add a prime, run `assemble_brandt.sage` for it, paste the printed
-  matrix/weights/charpoly/newform data into a new `DATA[p]` entry, and append the
-  prime. It verifies pre-computed matrices, it does not generate them.
-- **`verify_p61.py` (Python).** Specific to `p = 61`; the factors and newform
-  minimal polynomials are inline. It is a template for other primes but as
-  distributed checks only `p = 61`.
-- **`closed_identities_audit.py` (Python, `7 <= p <= 2500`).** The range is a loop
-  bound limited only by running time, not by any structural assumption; raising it
-  (e.g. `range(5, 100000)`) verifies the identities and the Section 7 growth
-  statements further out. This script never touches the graph.
+Full reproduction from scratch (order matters; every step saves
+incrementally; interruption is safe and rerunning resumes):
 
-In short: the closed-form audit extends freely, the geometric engine extends up
-to the `GF(p^2)` Weierstrass bound (`p <= 61` in practice), and the two Python
-certificates replay pre-computed geometric data rather than generating it.
+    python3 richelot.py 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149
+    python3 w2side.py
+    python3 msym.py
+    python3 assembly.py
 
-## License
+Approximate engine runtimes on a 2024 laptop: 30--45 min, 3 min,
+25--40 min, 1--2 h (unchanged from v2.0.2).
 
-The code is released under the MIT License (see `LICENSE`). The paper
-itself is not covered by this license.
+## Claim-by-claim verification map
+
+| Paper statement | Data | Command | Expected line |
+|---|---|---|---|
+| Appendix A matrices, p = 11..37 | h2_result_p.json | `python3 gen_appendix_A.py` | byte-identical .tex |
+| Lemma 8.1 Fix counts; Tr R(pi) = 2T_1 - h_2 | sigma in records | `python3 verify_all.py` | `global: Fix counts of Lemma 8.1 OK` |
+| Section 6 modulus bound 2 h_2(p) <= 2866 < 2^61 - 1 | records | `python3 verify_all.py` | `max 2*h2 = 2866 at p=149 OK` |
+| Section 6.9 worked example (Tr B_2(2) = 126, blocks (1,15,33,2*39,1), N_61 = x+7) | h2_result_61.json | `python3 verify_p61.py` and `verify_all.py` | asserts pass; `p= 61 ... charpoly OK` |
+| Theorem 2.3 / Conjecture 2.2 on 11 <= p <= 149 (factorizations, signs) | records + w2/w4 + ledger | `python3 assembly.py` | `catalogue EXACT, signs=OK` |
+| Proposition 6.2 hypotheses (a)--(d) | records | `python3 verify_reduction.py` (p = 11) and `verify_all.py` (all) | asserts pass; `ALL CHECKS PASSED (31/31 primes)` |
+| Theorem 8.5, finite input: d(p) >= 0 for 7 <= p <= 2500, cutoff 673 | -- | `python3 verify_positivity_2500.py` | `POSITIVITY ... PASSED, 7 <= p <= 2500` |
+| Lemma 4.1 (delta, d >= 0; cubic growth of Delta_III) | -- | `python3 certificate_positivity.py` | `POSITIVITY CERTIFICATE PASSED` |
+| External corroboration (Table 7 vs ALRTV) | omf5 data | `python3 certify_P4_omf5.py ...` | `(P4) PASSED ... 31/31` |
+| h_2(p), mass, Aut independently (lattices) | magma/ | run `magma/verify_h2_p.m` | `... INDEPENDENTLY CERTIFIED BY MAGMA` |
+
+## Acceptance run (this version)
+
+2026-08-13, clean Linux container, Python 3.12, python-flint 0.9.0:
+`verify_all.py` ALL CHECKS PASSED (31/31 primes);
+`verify_positivity_2500.py` PASSED (364 primes 7 <= p <= 2500, largest
+crude-bound failure at 673 confirmed); `verify_reduction.py` hypotheses
+(a)--(d) verified at p = 11. The engine replay figures are those of the
+v2.0.2 acceptance run; no data file changed in this version, so the
+frozen records are those certified there.
 
 ## How to cite
 
-If you use this artifact, please cite both the paper and the archived
-release (see `CITATION.cff` and the Zenodo DOI on the release page).
+Please cite the paper and this artifact (see `CITATION.cff`).
+Concept DOI 10.5281/zenodo.20798967; version DOI of this record:
+10.5281/zenodo.21927983.

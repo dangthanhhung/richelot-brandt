@@ -1,45 +1,22 @@
 cff-version: 1.2.0
-title: "Computational artifact for: The Richelot isogeny graph as a Brandt matrix"
-message: "If you use this artifact, please cite both the paper and this archived release."
-type: software
+message: "If you use this artifact, please cite both the artifact and the paper."
+title: "Richelot--Brandt artifact: certified Brandt matrices, spectra and sign data"
 authors:
   - family-names: "Dang"
     given-names: "Hung T."
-    orcid: "https://orcid.org/0009-0006-3272-0573"
-    affiliation: "Department of Mathematics, University of Phuong Dong, Hanoi, Vietnam"
-    email: hung.dt@phuongdong.edu.vn
-abstract: >-
-  Scripts, assembled Brandt matrices, and machine-checkable certificates
-  reproducing all computations in the paper "The Richelot isogeny graph as a
-  Brandt matrix: a global eigenvalue correspondence and a structural trace formula":
-  the eight Brandt matrices B_2(2) for 11 <= p <= 37, the full 128x128 computation at p = 61 with its independent Python certificate,
-  the spectral catalogue, the sign law, the trace identity, the type numbers,
-  and the closed-form predictions.
-keywords:
-  - Richelot isogeny graph
-  - Brandt matrix
-  - superspecial abelian surfaces
-  - paramodular forms
-  - type numbers
-license: MIT
-version: "2.0.2"
-date-released: "2026-07-23"
-doi: 10.5281/zenodo.20798967  # concept DOI (all versions)
+version: "3.0.0"
+date-released: "2026-08-13"
+doi: "10.5281/zenodo.21927983"
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.20798967
-    description: "Concept DOI (resolves to the latest version)"
-  - type: doi
-    value: 10.5281/zenodo.20798968
-    description: "Version DOI (first release)"
-  - type: doi
-    value: 10.5281/zenodo.21503334
-    description: "Version DOI (v2.0.2)"
+    value: "10.5281/zenodo.20798967"
+    description: "Concept DOI (all versions)"
+license: MIT
 preferred-citation:
   type: article
-  title: "The Richelot isogeny graph as a Brandt matrix: a global eigenvalue correspondence and a structural trace formula"
+  title: "A structural trace identity and certified spectra for the Richelot--Brandt graph"
   authors:
     - family-names: "Dang"
       given-names: "Hung T."
   year: 2026
-  journal: "(submitted)"
+  notes: "Submitted."
